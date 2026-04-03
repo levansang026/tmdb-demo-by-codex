@@ -129,6 +129,38 @@ That pass was used to:
 - keep UI-bound views on `@MainActor`
 - handle async cancellation safely in screen loaders
 
+## Comparison With The No-Skills Repo
+
+This repository can be compared against:
+
+- no-skills version: [levansang026/tmdb-no-skills-demo-by-codex](https://github.com/levansang026/tmdb-no-skills-demo-by-codex)
+- skills-based version: [levansang026/tmdb-demo-by-codex](https://github.com/levansang026/tmdb-demo-by-codex)
+
+Both repositories implement a similar TMDB movie-browsing experience. The main difference is not the feature list, but the development constraints and engineering workflow used to produce the result.
+
+| Area | No-skills repo | This repo with skills | Why skills matter |
+|---|---|---|---|
+| Repo guidance | Minimal README, no repo-specific agent playbook | README documents MCP workflow and the repo includes `CLAUDE.md` guidance for architecture, testing, and coding patterns | Skills work best when the agent has explicit rules, so follow-up iterations are more consistent |
+| Project structure | Single app target in one `.xcodeproj` | Workspace + app shell + Swift package + shared xcconfig setup | Skills pushed the project toward a modular structure that is easier to extend and maintain |
+| UI architecture | Screen-specific `ViewModels` | SwiftUI-native state flow with `@Environment`, `@State`, and package-contained feature code | Skills helped enforce a more opinionated, repo-consistent architecture instead of defaulting to generic patterns |
+| Concurrency model | Uses async/await, but with a plain shared client | Uses Swift Concurrency more explicitly with an `actor` client and `Sendable` types | Skills gave the agent concrete guidance to harden concurrency rather than stopping at "it works" |
+| Secret handling | Reads a bundled `.env` file from app resources | Uses `TMDB_API_KEY` via environment variable or gitignored `Secrets.xcconfig` | Skills helped steer the implementation toward a more Xcode-native, production-friendlier configuration flow |
+| Verification | No test targets included | Includes package tests, UI test target, and README-documented MCP verification flow | Skills improve repeatability by encouraging verification instead of code-only generation |
+| Tooling workflow | Hand-authored Xcode project flow | MCP-driven scaffold/build/test/screenshot workflow | Skills matter because they encode how the agent should build and validate the app, not just what code to write |
+
+### Why Skills Were Useful Here
+
+Without skills, Codex can still generate a working demo quickly. That is what the no-skills repository demonstrates.
+
+With skills, the output is more than a demo:
+
+- the repo is easier for another AI session to continue
+- architecture decisions are more deliberate and less generic
+- concurrency and configuration are handled with stricter patterns
+- build and verification steps are part of the documented workflow
+
+In short, skills were useful here because they improved determinism, maintainability, and iteration quality, not just the final UI.
+
 ## Implementation Notes
 
 ### TMDB
